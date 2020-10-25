@@ -1,0 +1,31 @@
+tb_user
+id;name;pass
+
+tb_categ
+id;name
+
+tb_singer
+id;name
+
+tb_song
+id;name;singer;category;category_aux;link_ytube;link_pback_ytube;notes
+
+tb_exec
+id;id_song;date;id_user
+
+
+lógica
+# mostrar músicas candidatas de acordo c/ o número de vezes (menor número de vezes), dt de execucaco e categoria
+
+1) considerar se selecionado "música ñ candidata"
+2) considerar se selecionado "somente músicas já ensaiadas"
+
+3) definir quantidade de vezes de exec das músicas
+4) desconsiderar as últimas músicas tocadas - caso exista + música disponível do que o necessário
+
+5) categorizar músicas:
+	a) ordenar músicas por dt de exec (+ velho p/ + novo)
+	a1) se ñ selecionado "somente músicas já ensaiadas", agregar a lista de músicas nunca tocadas
+	b) filtrar músicas por categoria
+
+6) apresentar listagem de músicas ordenadas por dt de exec (+ antigo p/ + novo), sendo cada coluna uma categoria
