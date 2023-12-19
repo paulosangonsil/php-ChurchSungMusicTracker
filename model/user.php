@@ -39,12 +39,18 @@ class User extends BaseCtrl {
                 $_resQuery = parent::getDBConn()->getSrvHnd()->query($cmdQuery);
 
                 if ($_resQuery === FALSE) {
-                    throw new \Exception(BaseCtrl::ERROR_REC_NOT_FOUND[0], BaseCtrl::ERROR_REC_NOT_FOUND[1]);
+                    // throw new \Exception(BaseCtrl::ERROR_REC_NOT_FOUND[0], BaseCtrl::ERROR_REC_NOT_FOUND[1]);
+                    return;
                 }
 
                 while ( $_row = $_resQuery->fetch() ) {
                     $idOrName = $_row[BaseCtrl::COL_ID];
                 }
+            }
+
+            if ( ! is_int($idOrName) ) {
+                // throw new \Exception(BaseCtrl::ERROR_REC_NOT_FOUND[0], BaseCtrl::ERROR_REC_NOT_FOUND[1]);
+                return;
             }
 
             parent::_fillBaseFields(User::TBL_NAME, $idOrName);
