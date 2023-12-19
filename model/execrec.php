@@ -11,7 +11,6 @@ require_once ('common.php');
  *
  */
 class ExecRec extends BaseCtrl {
-    // TODO - Insert your code here
     const   DATE_NEVER_PLAYED   = 19800101,
 
             COL_USER    = 1,
@@ -33,7 +32,7 @@ class ExecRec extends BaseCtrl {
 
     private /*User*/ $_user,
             /*Array<Song>*/ $_songs,
-            /*uint*/ $_date;
+            /*DateTime*/ $_date;
 
     /**
      *
@@ -113,15 +112,24 @@ class ExecRec extends BaseCtrl {
         $this->_songs = $list;
     }
 
-    function /*uint*/ getDate() {
-        return $this->_date;
+    function /*string|DateTime*/ getDate(/*bool*/ $asDate = FALSE) {
+        if ($asDate) {
+            return $this->_date;
+        }
+
+        return $this->_date->format('Ymd');
     }
 
     /**
      * @param int $dateOrId
      */
-    function /*void*/ setDate(/*uint*/ $dateOrId) {
-        $this->_date = $dateOrId;
+    function /*void*/ setDate(/*string|DateTime*/ $dateOrId) {
+        if ( ! ($dateOrId instanceof \DateTime) ) {
+            $this->_date = \DateTime::createFromFormat('Ymd', $dateOrId);
+        }
+        else {
+            $this->_date = $dateOrId;
+        }
     }
 
     /**
@@ -190,7 +198,15 @@ class ExecRec extends BaseCtrl {
      * @return int
      */
     static protected /*int*/ function _sortByDate(/*ExecRec*/ $a, /*ExecRec*/ $b) {
-        return $a->getDate() > $b->getDate();
+        if ( $a->getDate(TRUE) > $b->getDate(TRUE) ) {
+            return 1;
+        }
+        else if ( $a->getDate(TRUE) < $b->getDate(TRUE) ) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
     }
 
     static protected /*void*/ function _fillSongList(/*Database*/ $conn) {
@@ -253,7 +269,7 @@ class ExecRec extends BaseCtrl {
             }
         }
 
-        uasort($mtdRet, [ExecRec::class, '_sortByDate']);
+        usort($mtdRet, [ExecRec::class, '_sortByDate']);
 
         self::$_fnExec =TRUE;
 
