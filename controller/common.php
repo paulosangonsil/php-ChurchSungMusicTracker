@@ -108,7 +108,11 @@
 
     $_conn = new \controller\Database();
 
-    $_idUser = $_SESSION[CMD_USER_ID];
+    $_idUser = NULL;
+
+    if ( array_key_exists(CMD_USER_ID, $_SESSION) ) {
+        $_idUser = $_SESSION[CMD_USER_ID];
+    }
 
     $isLogged = ( ! empty($_idUser) && ($_idUser > 0) );
 
